@@ -1,0 +1,143 @@
+:root {
+  --forest: #173d2d;
+  --forest-2: #0e2b20;
+  --cream: #f3efe5;
+  --gold: #b89a62;
+  --white: #fffdf8;
+  --shadow: 0 28px 70px rgba(16, 40, 29, .35);
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  color: var(--white);
+  background: var(--forest-2);
+  font-family: "DM Sans", sans-serif;
+  line-height: 1.6;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  overflow: hidden;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 43, 32, .78) 0%, rgba(14, 43, 32, .88) 55%, rgba(14, 43, 32, .95) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wordmark {
+  margin: 0 0 28px;
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  letter-spacing: .04em;
+}
+
+.eyebrow {
+  margin: 0 0 16px;
+  color: var(--gold);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 20px;
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  line-height: 1.25;
+}
+
+.lead {
+  margin: 0 0 36px;
+  opacity: .82;
+  font-size: 1.05rem;
+}
+
+.contact-list {
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.contact-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 253, 248, .22);
+  border-radius: 999px;
+  color: var(--white);
+  text-decoration: none;
+  font-size: .92rem;
+  font-weight: 500;
+  transition: background .2s ease, border-color .2s ease;
+}
+
+.contact-list a:hover,
+.contact-list a:focus-visible {
+  background: rgba(255, 253, 248, .1);
+  border-color: var(--gold);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.map-link {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.map-link:hover,
+.map-link:focus-visible {
+  text-decoration: underline;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 48px;
+  opacity: .55;
+  font-size: .8rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-list a { transition: background .2s ease, border-color .2s ease; }
+}

@@ -1,18 +1,12 @@
-QUINTA CASAL CAMAZ — SITE ESTÁTICO
+QUINTA CASAL CAMAZ Website
 
-Como abrir:
-1. Abra a pasta.
-2. Faça duplo clique em index.html.
+Quinta Casal Camaz is a family-owned farm/estate for weddings and other celebrations, located in Aveleda, in the municipality of Vila do Conde, Portugal.
 
-Como publicar:
-- Pode carregar toda a pasta no Netlify, Vercel, GitHub Pages ou alojamento tradicional.
-- As imagens estão na pasta assets.
+Events-related activity started in 1995. The venue has been changed, maintained, and modernized over time, while keeping rustic and natural elements.
 
-Antes de publicar, confirme/edite:
-- Email do formulário em index.html (atualmente geral@quintacasalcamaz.pt, apenas provisório).
-- Texto da capacidade do salão.
-- Morada e contactos oficiais.
-- Fotografias finais e autorizações de utilização.
+This digital project has two main goals:
 
-Localização usada no mapa:
-41.26764, -8.69596 (Aveleda, Vila do Conde)
+1. Create a modern institutional website to promote the venue, the halls, the gardens, the location, and the contacts.
+2. Support the broader physical and commercial modernization process of the venue, making it more comfortable, elegant, contemporary, and visually appealing.
+
+The website should help turn visitors into leads and, ideally, into in-person visits to the venue.
