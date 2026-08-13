@@ -120,9 +120,18 @@ h1 {
 }
 
 .map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--gold);
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.map-link .icon {
+  width: 15px;
+  height: 15px;
 }
 
 .map-link:hover,
