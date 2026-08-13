@@ -36,7 +36,9 @@ Treat the following points as information confirmed by the owner/user:
 - The expansion was motivated, among other reasons, by the need to accommodate at least around **220 people** at a wedding.
 - The venue combines architecture and rustic elements with an ongoing modernization process.
 - The venue has halls and outdoor areas/gardens used for events and photo sessions.
-- The main audience includes weddings, but the venue can also be presented for christenings, birthdays, family celebrations, and corporate events, provided this offering is confirmed before being published as a commercial commitment.
+- The main audience includes weddings, but the venue can also be presented for christenings, first communions, birthdays, family celebrations, and corporate events — confirmed by the owner as part of the current offering.
+- Official domain: **quintacasalcamaz.pt** (purchased and configured on GitHub Pages).
+- Official email: **geral@quintacasalcamaz.pt**.
 
 ## 3. Operational information still to be confirmed
 
@@ -48,7 +50,6 @@ Never present the following data as final without explicit confirmation from the
 - Final Google Maps coordinates.
 - Phone number.
 - WhatsApp number.
-- Final official email.
 - Exact Instagram URL and handle.
 - Exact Facebook URL and name.
 - Prices, menus, packages, or commercial terms.
@@ -256,7 +257,7 @@ Deployment goal:
 
 - Pushing to the production branch should automatically update the website.
 - Preferably free or very low-cost hosting.
-- Intended domain: **quintacasalcamaz.pt**, subject to purchase and confirmation.
+- Domain: **quintacasalcamaz.pt** (purchased and configured).
 
 The solution discussed for the initial phase is:
 
@@ -378,11 +379,11 @@ When generating code, content, images, proposals, or analyses:
 
 ## 15. Checklist before final launch
 
-- [ ] Confirm official domain.
+- [x] Confirm official domain.
 - [ ] Confirm full address.
 - [ ] Confirm map coordinates.
 - [ ] Confirm current capacity and capacity after expansion.
-- [ ] Confirm official email.
+- [x] Confirm official email.
 - [ ] Confirm phone and WhatsApp.
 - [ ] Confirm Instagram and other social media.
 - [ ] Confirm the real offering of event types.
