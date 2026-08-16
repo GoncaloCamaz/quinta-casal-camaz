@@ -42,3 +42,8 @@ lightbox.querySelector('.lightbox-close').addEventListener('click', () => lightb
 lightbox.addEventListener('click', event => {
   if (event.target === lightbox) lightbox.close();
 });
+
+document.querySelectorAll('a[href="#topo"]').forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}));
