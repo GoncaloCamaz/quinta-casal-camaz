@@ -130,6 +130,30 @@ nav a:hover {
 	border-radius: 999px;
 }
 
+.lang-switch {
+	position: relative;
+	margin-left: 6px;
+	padding-left: 22px;
+	font-size: .78rem;
+	letter-spacing: .06em;
+	opacity: .84;
+}
+
+.lang-switch::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 1px;
+	height: 16px;
+	background: rgba(255, 255, 255, .35);
+}
+
+.lang-switch:hover {
+	opacity: 1;
+}
+
 .menu-toggle {
 	display: none;
 	border: 1px solid rgba(255, 255, 255, .4);
@@ -288,7 +312,6 @@ h2 {
 
 .section-heading {
 	max-width: 900px;
-	margin-bottom: 70px;
 }
 
 .centered {
@@ -390,6 +413,104 @@ h2 {
 	box-shadow: var(--shadow);
 }
 
+.image-carousel {
+	position: relative;
+}
+
+.image-carousel .carousel-track {
+	position: relative;
+	width: 100%;
+	height: min(70vh, 760px);
+	border-radius: var(--radius);
+	overflow: hidden;
+	box-shadow: var(--shadow);
+	touch-action: pan-y;
+	transform: translateZ(0);
+	isolation: isolate;
+}
+
+.image-carousel .carousel-track img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: inherit;
+	box-shadow: none;
+	opacity: 0;
+	transition: opacity 1s ease;
+}
+
+.image-carousel .carousel-track img.is-active {
+	opacity: 1;
+}
+
+.image-carousel .carousel-track::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	inset: auto 0 0 0;
+	height: 45%;
+	background: linear-gradient(0deg, rgba(5, 22, 15, .55), transparent);
+	pointer-events: none;
+}
+
+.carousel-caption {
+	position: absolute;
+	z-index: 2;
+	left: 26px;
+	bottom: 24px;
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	color: white;
+	font-size: .8rem;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	transition: opacity .3s ease;
+	pointer-events: none;
+}
+
+.carousel-caption-index {
+	font-family: "Playfair Display";
+	font-size: .95rem;
+	color: var(--gold);
+	letter-spacing: 0;
+}
+
+.carousel-dots {
+	position: absolute;
+	z-index: 2;
+	bottom: 22px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 10px;
+}
+
+.carousel-dots button {
+	position: relative;
+	width: 9px;
+	height: 9px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, .5);
+	cursor: pointer;
+	transition: background .3s ease, transform .3s ease;
+}
+
+.carousel-dots button::after {
+	content: "";
+	position: absolute;
+	inset: -12px;
+}
+
+.carousel-dots button.is-active {
+	background: var(--forest);
+	transform: scale(1.3);
+}
+
 .feature-copy {
 	max-width: 620px;
 }
@@ -424,42 +545,39 @@ h2 {
 	margin-left: 8px;
 }
 
-.collage {
-	position: relative;
-	min-height: 700px;
-}
-
-.collage img:first-child {
-	width: 78%;
-	height: 72%;
-}
-
-.collage img:last-child {
-	position: absolute;
-	width: 48%;
-	height: 48%;
-	right: 0;
-	bottom: 0;
-	border: 10px solid var(--cream);
-}
-
-.quote-card {
+.highlights {
 	margin-top: 38px;
-	padding: 28px;
+	display: grid;
+	gap: 22px;
+}
+
+.highlight-item {
+	padding-left: 18px;
 	border-left: 2px solid var(--gold);
-	background: rgba(23, 61, 45, .06);
 }
 
-.quote-card span {
-	color: var(--gold);
-	font-size: 3rem;
-	line-height: .6;
-}
-
-.quote-card p {
+.highlight-item h3 {
 	font-family: "Playfair Display";
-	font-size: 1.3rem;
-	margin: 8px 0 0;
+	font-size: 1.05rem;
+	text-transform: uppercase;
+	letter-spacing: .06em;
+	margin: 0 0 6px;
+}
+
+.highlight-item p {
+	margin: 0;
+	font-size: .92rem;
+	opacity: .78;
+}
+
+.highlight-item p.highlight-sub {
+	margin-bottom: 4px;
+}
+
+.highlight-item p.highlight-capacity {
+	font-weight: 600;
+	opacity: 1;
+	color: var(--forest);
 }
 
 .experience {
@@ -467,22 +585,42 @@ h2 {
 	overflow: hidden;
 }
 
-.experience-bg {
-	position: absolute;
-	width: 600px;
-	height: 600px;
-	border: 1px solid rgba(23, 61, 45, .12);
-	border-radius: 50%;
-	left: 50%;
-	top: 40%;
-	transform: translate(-50%, -50%);
+.experience.has-carousel {
+	height: 220vh;
+	margin-bottom: 80px;
+	overflow: visible;
 }
 
-.experience-grid {
+.experience-stage {
+	position: relative;
+	padding: clamp(90px, 12vw, 180px) clamp(24px, 7vw, 120px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.experience.has-carousel .experience-stage {
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	min-height: 100svh;
+	padding: 60px clamp(24px, 7vw, 120px) 70px;
+	justify-content: center;
+}
+
+.experience-stage .section-heading {
+	position: relative;
+	z-index: 20;
+}
+
+.experience-wheel {
 	position: relative;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 24px;
+	width: 100%;
+	max-width: 1100px;
+	margin-top: 70px;
 }
 
 .experience-card {
@@ -501,6 +639,48 @@ h2 {
 .experience-card h3 {
 	margin: 80px 0 14px;
 	font-size: 2rem;
+}
+
+/* Circular scroll carousel — enabled via JS, only when motion is allowed */
+.experience-wheel.wheel-active {
+	display: block;
+	height: 560px;
+	margin-top: 10px;
+}
+
+.experience-wheel.wheel-active .experience-card {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: min(220px, 55vw);
+	min-height: 160px;
+	padding: 24px;
+	margin: 0;
+	box-shadow: var(--shadow);
+	will-change: transform, opacity;
+}
+
+.experience-wheel.wheel-active .experience-card h3 {
+	margin: 10px 0 6px;
+	font-size: 1.15rem;
+}
+
+.experience-wheel.wheel-active .experience-card p {
+	font-size: .92rem;
+	opacity: .85;
+}
+
+@media (max-width: 680px) {
+	.experience-wheel.wheel-active {
+		height: 560px;
+	}
+
+	.experience-wheel.wheel-active .experience-card {
+		width: min(300px, 82vw);
+		min-height: 170px;
+		padding: 24px;
+		background: rgba(255, 253, 248, .96);
+	}
 }
 
 .gallery-section {
@@ -665,7 +845,8 @@ footer {
 }
 
 footer>small {
-	text-align: right;
+	grid-column: 1/-1;
+	text-align: center;
 	opacity: .55;
 }
 
@@ -766,6 +947,17 @@ footer>small {
 		text-align: center;
 	}
 
+	.lang-switch {
+		margin-top: 8px;
+		margin-left: 0;
+		padding-left: 0;
+		text-align: center;
+	}
+
+	.lang-switch::before {
+		content: none;
+	}
+
 	.intro-grid,
 	.feature,
 	.feature.reverse,
@@ -777,11 +969,7 @@ footer>small {
 		order: 0;
 	}
 
-	.collage {
-		min-height: 580px;
-	}
-
-	.experience-grid {
+	.experience-wheel {
 		grid-template-columns: 1fr;
 	}
 
@@ -847,16 +1035,8 @@ footer>small {
 		height: 58vh;
 	}
 
-	.collage {
-		min-height: 500px;
-	}
-
-	.collage img:first-child {
-		height: 68%;
-	}
-
-	.collage img:last-child {
-		border-width: 6px;
+	.image-carousel .carousel-track {
+		height: 58vh;
 	}
 
 	.gallery-grid {
