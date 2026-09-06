@@ -38,6 +38,18 @@ a {
 	text-decoration: none;
 }
 
+.inline-link {
+	color: var(--gold);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+	transition: color 0.2s ease;
+}
+
+.inline-link:hover {
+	color: var(--forest);
+}
+
 button,
 input,
 select,
@@ -370,7 +382,7 @@ h2 {
 	width: 100%;
 	aspect-ratio: 4/5;
 	object-fit: cover;
-	border-radius: 48% 48% 24px 24px;
+	border-radius: var(--radius);
 	box-shadow: var(--shadow);
 }
 
