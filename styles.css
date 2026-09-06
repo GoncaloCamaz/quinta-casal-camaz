@@ -335,7 +335,7 @@ h2 {
 	display: grid;
 	grid-template-columns: 1.15fr .85fr;
 	gap: clamp(50px, 8vw, 130px);
-	align-items: center;
+	align-items: stretch;
 }
 
 .intro-copy {
@@ -376,11 +376,12 @@ h2 {
 .portrait-card {
 	margin: 0;
 	position: relative;
+	height: 100%;
 }
 
 .portrait-card img {
 	width: 100%;
-	aspect-ratio: 4/5;
+	height: 100%;
 	object-fit: cover;
 	border-radius: var(--radius);
 	box-shadow: var(--shadow);
