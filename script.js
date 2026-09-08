@@ -48,6 +48,24 @@ document.querySelectorAll('a[href="#topo"]').forEach(link => link.addEventListen
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }));
 
+const mapWrap = document.querySelector('.map-wrap');
+if (mapWrap) {
+  const mapPreconnectObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      ['https://www.google.com', 'https://maps.gstatic.com', 'https://maps.googleapis.com'].forEach(href => {
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = href;
+        document.head.appendChild(link);
+      });
+      mapPreconnectObserver.disconnect();
+    });
+  }, { rootMargin: '800px' });
+
+  mapPreconnectObserver.observe(mapWrap);
+}
+
 document.querySelectorAll('[data-carousel]').forEach(carousel => {
   const track = carousel.querySelector('.carousel-track');
   const slides = Array.from(carousel.querySelectorAll('.carousel-track img'));
@@ -59,6 +77,7 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
 
   let current = 0;
   let timer = null;
+  let captionTimer = null;
 
   const goTo = index => {
     current = (index + slides.length) % slides.length;
@@ -69,8 +88,9 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     });
 
     if (caption && slides[current].dataset.caption) {
+      clearTimeout(captionTimer);
       caption.style.opacity = 0;
-      setTimeout(() => {
+      captionTimer = setTimeout(() => {
         captionIndex.textContent = String(current + 1).padStart(2, '0');
         captionText.textContent = slides[current].dataset.caption;
         caption.style.opacity = 1;
@@ -123,7 +143,18 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   });
 
   goTo(0);
-  startAutoplay();
+
+  const visibilityObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        startAutoplay();
+      } else {
+        stopAutoplay();
+      }
+    });
+  }, { threshold: 0.4 });
+
+  visibilityObserver.observe(carousel);
 });
 
 const experienceSection = document.querySelector('#experience-section');
