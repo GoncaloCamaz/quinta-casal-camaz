@@ -311,13 +311,18 @@ h2 {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	color: white;
 }
 
-.scroll-cue span {
+.scroll-cue-line {
 	width: 48px;
 	height: 1px;
 	background: white;
 	animation: pulse 1.8s infinite;
+}
+
+.scroll-cue-arrow {
+	display: none;
 }
 
 .section {
@@ -470,6 +475,39 @@ h2 {
 	pointer-events: none;
 }
 
+.carousel-arrow {
+	position: absolute;
+	z-index: 2;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(5, 22, 15, .35);
+	color: white;
+	font-size: 1.3rem;
+	line-height: 1;
+	cursor: pointer;
+	transition: background .25s ease;
+	touch-action: manipulation;
+}
+
+.carousel-arrow:hover {
+	background: rgba(5, 22, 15, .55);
+}
+
+.carousel-arrow-prev {
+	left: 16px;
+}
+
+.carousel-arrow-next {
+	right: 16px;
+}
+
 .carousel-caption {
 	position: absolute;
 	z-index: 2;
@@ -513,6 +551,7 @@ h2 {
 	background: rgba(255, 255, 255, .5);
 	cursor: pointer;
 	transition: background .3s ease, transform .3s ease;
+	touch-action: manipulation;
 }
 
 .carousel-dots button::after {
@@ -925,6 +964,17 @@ footer>small {
 	}
 }
 
+@keyframes bounce {
+	0%, 100% {
+		transform: translateY(0);
+		opacity: .6;
+	}
+	50% {
+		transform: translateY(6px);
+		opacity: 1;
+	}
+}
+
 @keyframes marquee {
 	to {
 		transform: translateX(-50%);
@@ -1032,7 +1082,27 @@ footer>small {
 	}
 
 	.scroll-cue {
+		right: auto;
+		left: 50%;
+		bottom: 22px;
+		transform: translateX(-50%);
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.scroll-cue-line {
 		display: none;
+	}
+
+	.scroll-cue-text {
+		font-size: .65rem;
+	}
+
+	.scroll-cue-arrow {
+		display: block;
+		font-size: 1.2rem;
+		line-height: 1;
+		animation: bounce 1.6s infinite;
 	}
 
 	h1 {
@@ -1067,6 +1137,20 @@ footer>small {
 
 	.carousel-dots {
 		bottom: 8px;
+	}
+
+	.carousel-arrow {
+		width: 34px;
+		height: 34px;
+		font-size: 1.1rem;
+	}
+
+	.carousel-arrow-prev {
+		left: 10px;
+	}
+
+	.carousel-arrow-next {
+		right: 10px;
 	}
 
 	.gallery-grid {

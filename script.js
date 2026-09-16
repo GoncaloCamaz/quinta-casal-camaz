@@ -70,6 +70,8 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   const track = carousel.querySelector('.carousel-track');
   const slides = Array.from(carousel.querySelectorAll('.carousel-track img'));
   const dots = Array.from(carousel.querySelectorAll('.carousel-dots button'));
+  const prevButton = carousel.querySelector('.carousel-arrow-prev');
+  const nextButton = carousel.querySelector('.carousel-arrow-next');
   const caption = carousel.querySelector('.carousel-caption');
   const captionIndex = carousel.querySelector('.carousel-caption-index');
   const captionText = carousel.querySelector('.carousel-caption-text');
@@ -114,6 +116,16 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     startAutoplay();
   }));
 
+  prevButton?.addEventListener('click', () => {
+    goTo(current - 1);
+    startAutoplay();
+  });
+
+  nextButton?.addEventListener('click', () => {
+    goTo(current + 1);
+    startAutoplay();
+  });
+
   carousel.addEventListener('mouseenter', stopAutoplay);
   carousel.addEventListener('mouseleave', startAutoplay);
 
@@ -125,6 +137,8 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     dragStartX = event.clientX;
     dragStartY = event.clientY;
     dragging = true;
+    stopAutoplay();
+    track.setPointerCapture?.(event.pointerId);
   });
 
   track.addEventListener('pointerup', event => {
@@ -134,12 +148,18 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     const deltaY = event.clientY - dragStartY;
     if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
       goTo(current + (deltaX < 0 ? 1 : -1));
-      startAutoplay();
     }
+    startAutoplay();
   });
 
   track.addEventListener('pointercancel', () => {
     dragging = false;
+    startAutoplay();
+  });
+
+  track.addEventListener('lostpointercapture', () => {
+    dragging = false;
+    startAutoplay();
   });
 
   goTo(0);
