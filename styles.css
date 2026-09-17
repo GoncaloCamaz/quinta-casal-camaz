@@ -351,7 +351,7 @@ h2 {
 }
 
 .section {
-	padding: clamp(90px, 12vw, 180px) clamp(24px, 7vw, 120px);
+	padding: clamp(64px, 8vw, 140px) clamp(24px, 7vw, 120px);
 }
 
 .section-heading {
@@ -665,8 +665,8 @@ h2 {
 }
 
 .experience.has-carousel {
-	height: 220vh;
-	margin-bottom: 80px;
+	height: 180vh;
+	margin-bottom: 40px;
 	overflow: visible;
 }
 
@@ -735,6 +735,8 @@ h2 {
 	min-height: 160px;
 	padding: 24px;
 	margin: 0;
+	background: rgba(255, 253, 248, .92);
+	backdrop-filter: none;
 	box-shadow: var(--shadow);
 	will-change: transform, opacity;
 }
@@ -761,10 +763,6 @@ h2 {
 		background: rgba(255, 253, 248, .96);
 		backdrop-filter: none;
 	}
-}
-
-.gallery-section {
-	padding-bottom: 0;
 }
 
 .gallery-grid {
@@ -862,6 +860,101 @@ h2 {
 	border: 0;
 	border-radius: var(--radius);
 	filter: saturate(.75) contrast(.95);
+}
+
+.faq-list {
+	max-width: 820px;
+	margin: 60px auto 0;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.faq-item {
+	border: 1px solid rgba(23, 61, 45, .16);
+	border-radius: 20px;
+	background: var(--white);
+	overflow: hidden;
+}
+
+.faq-question {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding: 22px 28px;
+	background: transparent;
+	border: none;
+	text-align: left;
+	font-family: "Playfair Display";
+	font-size: 1.05rem;
+	color: var(--forest);
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.faq-question:focus {
+	outline: none;
+}
+
+.faq-question:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: -4px;
+}
+
+.faq-icon {
+	position: relative;
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+}
+
+.faq-icon::before,
+.faq-icon::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background: var(--gold);
+	border-radius: 2px;
+	transform: translate(-50%, -50%);
+}
+
+.faq-icon::before {
+	width: 100%;
+	height: 2px;
+}
+
+.faq-icon::after {
+	width: 2px;
+	height: 100%;
+	transition: transform .3s ease;
+}
+
+.faq-item.open .faq-icon::after {
+	transform: translate(-50%, -50%) rotate(90deg);
+	opacity: 0;
+}
+
+.faq-answer {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows .3s ease;
+}
+
+.faq-answer-inner {
+	overflow: hidden;
+}
+
+.faq-answer p {
+	margin: 0;
+	padding: 0 28px 24px;
+	opacity: .8;
+}
+
+.faq-item.open .faq-answer {
+	grid-template-rows: 1fr;
 }
 
 .contact-card {

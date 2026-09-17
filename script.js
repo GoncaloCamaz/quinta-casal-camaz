@@ -43,6 +43,23 @@ lightbox.addEventListener('click', event => {
   if (event.target === lightbox) lightbox.close();
 });
 
+document.querySelectorAll('.faq-question').forEach(button => {
+  button.addEventListener('click', () => {
+    const item = button.closest('.faq-item');
+    const open = item.classList.contains('open');
+
+    document.querySelectorAll('.faq-item.open').forEach(openItem => {
+      if (openItem !== item) {
+        openItem.classList.remove('open');
+        openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    item.classList.toggle('open', !open);
+    button.setAttribute('aria-expanded', String(!open));
+  });
+});
+
 document.querySelectorAll('a[href="#topo"]').forEach(link => link.addEventListener('click', event => {
   event.preventDefault();
   window.scrollTo({ top: 0, behavior: 'smooth' });
