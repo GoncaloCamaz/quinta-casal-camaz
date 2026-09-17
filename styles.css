@@ -692,6 +692,10 @@ h2 {
 	z-index: 20;
 }
 
+.experience-stage .section-heading h2 {
+	font-size: clamp(2.6rem, 4vw, 3.8rem);
+}
+
 .experience-wheel {
 	position: relative;
 	display: grid;
@@ -950,6 +954,7 @@ h2 {
 .faq-answer p {
 	margin: 0;
 	padding: 0 28px 24px;
+	color: var(--ink);
 	opacity: .8;
 }
 
