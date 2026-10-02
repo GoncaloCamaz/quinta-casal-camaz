@@ -1,3 +1,20 @@
+/* Self-hosted variable fonts (latin subset, covers pt-PT), from Google Fonts */
+@font-face {
+	font-family: "DM Sans";
+	font-style: normal;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url("assets/fonts/dm-sans-latin.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Playfair Display";
+	font-style: normal;
+	font-weight: 500 600;
+	font-display: swap;
+	src: url("assets/fonts/playfair-display-latin.woff2") format("woff2");
+}
+
 :root {
 	--forest: #173d2d;
 	--forest-2: #0e2b20;
@@ -241,6 +258,8 @@ nav a:hover {
 	z-index: 1;
 	max-width: 880px;
 	padding: 180px clamp(24px, 8vw, 140px) 120px;
+	/* Transform-only entrance: opacity stays at 1 so the title (LCP) paints immediately */
+	animation: heroRise .8s ease-out backwards;
 }
 
 .eyebrow {
@@ -1072,6 +1091,12 @@ footer>small {
 .reveal.visible {
 	opacity: 1;
 	transform: none;
+}
+
+@keyframes heroRise {
+	from {
+		transform: translateY(32px);
+	}
 }
 
 @keyframes slowZoom {
