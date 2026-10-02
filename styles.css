@@ -1015,6 +1015,56 @@ h2 {
 	color: var(--forest);
 }
 
+.button-whatsapp {
+	gap: 10px;
+}
+
+/* WhatsApp on its own row, phone and email below it */
+@media (min-width: 681px) {
+	.contact-methods::after {
+		content: "";
+		flex-basis: 100%;
+		order: 1;
+	}
+
+	.contact-methods .button-outline {
+		order: 2;
+	}
+}
+
+.whatsapp-float {
+	position: fixed;
+	z-index: 40;
+	right: 18px;
+	bottom: calc(18px + env(safe-area-inset-bottom));
+	width: 56px;
+	height: 56px;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: var(--forest);
+	color: var(--cream);
+	box-shadow: 0 10px 28px rgba(5, 22, 15, .35);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(16px);
+	/* Delay visibility so the button fades out before it stops being focusable */
+	transition: opacity .3s ease, transform .3s ease, visibility 0s linear .3s;
+}
+
+.whatsapp-float.is-visible {
+	opacity: 1;
+	visibility: visible;
+	transform: none;
+	transition-delay: 0s;
+}
+
+.whatsapp-float:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 3px;
+}
+
 .social-links {
 	display: flex;
 	justify-content: center;
@@ -1136,6 +1186,10 @@ footer>small {
 
 @media (max-width: 980px) {
 	.menu-toggle {
+		display: flex;
+	}
+
+	.whatsapp-float {
 		display: flex;
 	}
 

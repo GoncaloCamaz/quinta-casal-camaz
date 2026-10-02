@@ -174,6 +174,21 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   preloadObserver.observe(carousel);
 });
 
+const whatsappFloat = document.querySelector('.whatsapp-float');
+
+if (whatsappFloat) {
+  // Only show the floating button between the hero and the contact section, where it isn't redundant
+  const blockers = ['.hero', '#contactos', 'footer'].map(selector => document.querySelector(selector)).filter(Boolean);
+  const inView = new Set();
+
+  const floatObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => (entry.isIntersecting ? inView.add(entry.target) : inView.delete(entry.target)));
+    whatsappFloat.classList.toggle('is-visible', inView.size === 0);
+  });
+
+  blockers.forEach(el => floatObserver.observe(el));
+}
+
 const experienceSection = document.querySelector('#experience-section');
 const experienceWheel = document.querySelector('[data-experience-wheel]');
 
