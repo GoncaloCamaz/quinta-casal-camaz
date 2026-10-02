@@ -95,12 +95,19 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   if (slides.length < 2) return;
 
   let current = 0;
-  let timer = null;
   let captionTimer = null;
+
+  // Decoding a large photo on first paint can block the main thread for hundreds of ms (bad INP),
+  // so decode the target slide off the critical path before making it visible.
+  const decodeSlide = slide => (slide.decode ? slide.decode().catch(() => {}) : Promise.resolve());
 
   const goTo = index => {
     current = (index + slides.length) % slides.length;
-    slides.forEach((slide, i) => slide.classList.toggle('is-active', i === current));
+    const target = current;
+    decodeSlide(slides[target]).then(() => {
+      if (target !== current) return;
+      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === target));
+    });
     dots.forEach((dot, i) => {
       dot.classList.toggle('is-active', i === current);
       dot.setAttribute('aria-selected', String(i === current));
@@ -117,34 +124,10 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     }
   };
 
-  const startAutoplay = () => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    stopAutoplay();
-    timer = setInterval(() => goTo(current + 1), 5000);
-  };
+  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
 
-  const stopAutoplay = () => {
-    if (timer) clearInterval(timer);
-    timer = null;
-  };
-
-  dots.forEach((dot, i) => dot.addEventListener('click', () => {
-    goTo(i);
-    startAutoplay();
-  }));
-
-  prevButton?.addEventListener('click', () => {
-    goTo(current - 1);
-    startAutoplay();
-  });
-
-  nextButton?.addEventListener('click', () => {
-    goTo(current + 1);
-    startAutoplay();
-  });
-
-  carousel.addEventListener('mouseenter', stopAutoplay);
-  carousel.addEventListener('mouseleave', startAutoplay);
+  prevButton?.addEventListener('click', () => goTo(current - 1));
+  nextButton?.addEventListener('click', () => goTo(current + 1));
 
   let dragStartX = 0;
   let dragStartY = 0;
@@ -154,7 +137,6 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     dragStartX = event.clientX;
     dragStartY = event.clientY;
     dragging = true;
-    stopAutoplay();
     track.setPointerCapture?.(event.pointerId);
   });
 
@@ -166,32 +148,30 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
     if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
       goTo(current + (deltaX < 0 ? 1 : -1));
     }
-    startAutoplay();
   });
 
-  track.addEventListener('pointercancel', () => {
-    dragging = false;
-    startAutoplay();
-  });
+  // Native image drag-and-drop would cancel the pointer and swallow mouse swipes on desktop
+  track.addEventListener('dragstart', event => event.preventDefault());
 
-  track.addEventListener('lostpointercapture', () => {
+  const endDrag = () => {
     dragging = false;
-    startAutoplay();
-  });
+  };
+
+  track.addEventListener('pointercancel', endDrag);
+  track.addEventListener('lostpointercapture', endDrag);
 
   goTo(0);
 
-  const visibilityObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        startAutoplay();
-      } else {
-        stopAutoplay();
-      }
+  const preloadObserver = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    preloadObserver.disconnect();
+    slides.forEach(slide => {
+      slide.loading = 'eager';
+      decodeSlide(slide);
     });
-  }, { threshold: 0.4 });
+  }, { rootMargin: '400px 0px' });
 
-  visibilityObserver.observe(carousel);
+  preloadObserver.observe(carousel);
 });
 
 const experienceSection = document.querySelector('#experience-section');
