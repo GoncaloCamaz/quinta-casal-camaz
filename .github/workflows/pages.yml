@@ -31,6 +31,7 @@ jobs:
           cp -r assets _site/
           cp -r en _site/
           cp -r privacidade _site/
+          cp -r tour _site/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
