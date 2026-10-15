@@ -3,6 +3,8 @@ const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#main-nav');
 const lightbox = document.querySelector('.lightbox');
 const lightboxImage = lightbox.querySelector('img');
+const lightboxCredit = lightbox.querySelector('.lightbox-credit');
+const lightboxCreditLink = lightbox.querySelector('.lightbox-credit-link');
 
 document.querySelector('#year').textContent = new Date().getFullYear();
 
@@ -33,7 +35,17 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 document.querySelectorAll('.gallery-item').forEach(button => {
   button.addEventListener('click', () => {
-    lightboxImage.src = button.dataset.image;
+    const thumb = button.querySelector('img');
+    // reuse the format the browser already picked for the thumbnail (WebP when supported)
+    lightboxImage.src = thumb.currentSrc || button.dataset.image;
+    lightboxImage.alt = thumb.alt;
+    lightboxCredit.hidden = !button.dataset.credit;
+    lightboxCreditLink.textContent = button.dataset.credit || '';
+    if (button.dataset.creditUrl) {
+      lightboxCreditLink.href = button.dataset.creditUrl;
+    } else {
+      lightboxCreditLink.removeAttribute('href');
+    }
     lightbox.showModal();
   });
 });
@@ -198,6 +210,7 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
   const maxAngle = (cards.length - 1) * stepAngle;
   const mobileQuery = window.matchMedia('(max-width: 680px)');
 
+  experienceSection.style.setProperty('--experience-cards', cards.length);
   experienceSection.classList.add('has-carousel');
   experienceWheel.classList.add('wheel-active');
 
@@ -208,7 +221,7 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
     cards.forEach((card, i) => {
       const cardAngle = i * stepAngle - angle;
       const rad = (cardAngle * Math.PI) / 180;
-      const x = Math.sin(rad) * radius;
+      const x = Math.sin(rad) * radius * 1.3;
       const y = Math.cos(rad) * radius;
       const focus = (Math.cos(rad) + 1) / 2;
       const scale = 0.7 + focus * 0.3;

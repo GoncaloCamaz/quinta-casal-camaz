@@ -34,6 +34,8 @@
 
 html {
 	scroll-behavior: smooth;
+	/* canvas behind the page (overscroll, mobile status bar) matches the header */
+	background: #0e2b20;
 }
 
 body {
@@ -84,12 +86,12 @@ textarea {
 	gap: 24px;
 	padding: 18px clamp(22px, 4vw, 72px);
 	color: white;
-	transition: .35s ease;
+	transition: background-color .45s ease, box-shadow .45s ease, padding .45s ease;
 }
 
 .site-header.scrolled {
-	background: rgba(14, 43, 32, .92);
-	backdrop-filter: blur(16px);
+	/* No backdrop-filter: blurring the content underneath flickered white during fast scrolls in Chrome */
+	background: rgba(14, 43, 32, .96);
 	padding-block: 12px;
 	box-shadow: 0 12px 35px rgba(0, 0, 0, .16);
 }
@@ -689,7 +691,7 @@ h2 {
 }
 
 .experience.has-carousel {
-	height: 180vh;
+	height: calc(45vh * var(--experience-cards, 4));
 	margin-bottom: 40px;
 	overflow: visible;
 }
@@ -1124,6 +1126,30 @@ footer>small {
 	border-radius: 20px;
 }
 
+.lightbox-credit {
+	position: fixed;
+	right: 24px;
+	bottom: 18px;
+	margin: 0;
+	color: rgba(255, 255, 255, .7);
+	font-size: .72rem;
+	letter-spacing: .04em;
+}
+
+.lightbox-credit[hidden] {
+	display: none;
+}
+
+.lightbox-credit-link {
+	color: inherit;
+	text-underline-offset: 2px;
+}
+
+.lightbox-credit-link:hover,
+.lightbox-credit-link:focus-visible {
+	color: white;
+}
+
 .lightbox-close {
 	position: fixed;
 	right: 24px;
@@ -1185,8 +1211,21 @@ footer>small {
 }
 
 @media (max-width: 980px) {
+	/* always opaque where the hamburger menu is used, so the browser status bar stays green from the first paint */
+	.site-header,
+	.site-header.scrolled {
+		background: rgba(14, 43, 32, .96);
+		padding-block: 18px;
+	}
+
 	.menu-toggle {
 		display: flex;
+	}
+
+	.menu-toggle,
+	nav.open {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	.whatsapp-float {
@@ -1284,8 +1323,14 @@ footer>small {
 	}
 
 	.hero .eyebrow {
-		font-size: 1.05rem;
-		text-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+		font-size: .9rem;
+		letter-spacing: .16em;
+		color: #dcc28f;
+		text-shadow: 0 1px 8px rgba(0, 0, 0, .6);
+	}
+
+	.hero-overlay {
+		background: linear-gradient(180deg, rgba(5, 22, 15, .35) 0%, rgba(5, 22, 15, .62) 30%, rgba(5, 22, 15, .5) 60%, rgba(5, 22, 15, .72) 100%);
 	}
 
 	.scroll-cue {
