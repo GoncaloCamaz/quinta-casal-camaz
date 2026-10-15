@@ -33,25 +33,68 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-document.querySelectorAll('.gallery-item').forEach(button => {
+const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+let galleryIndex = 0;
+
+const showGalleryItem = index => {
+  galleryIndex = (index + galleryItems.length) % galleryItems.length;
+  const button = galleryItems[galleryIndex];
+  const thumb = button.querySelector('img');
+  // reuse the format the browser already picked for the thumbnail (WebP when supported)
+  lightboxImage.src = thumb.currentSrc || button.dataset.image;
+  lightboxImage.alt = thumb.alt;
+  lightboxCredit.hidden = !button.dataset.credit;
+  lightboxCreditLink.textContent = button.dataset.credit || '';
+  if (button.dataset.creditUrl) {
+    lightboxCreditLink.href = button.dataset.creditUrl;
+  } else {
+    lightboxCreditLink.removeAttribute('href');
+  }
+};
+
+galleryItems.forEach((button, index) => {
   button.addEventListener('click', () => {
-    const thumb = button.querySelector('img');
-    // reuse the format the browser already picked for the thumbnail (WebP when supported)
-    lightboxImage.src = thumb.currentSrc || button.dataset.image;
-    lightboxImage.alt = thumb.alt;
-    lightboxCredit.hidden = !button.dataset.credit;
-    lightboxCreditLink.textContent = button.dataset.credit || '';
-    if (button.dataset.creditUrl) {
-      lightboxCreditLink.href = button.dataset.creditUrl;
-    } else {
-      lightboxCreditLink.removeAttribute('href');
-    }
+    showGalleryItem(index);
     lightbox.showModal();
   });
 });
 
+lightbox.querySelector('.lightbox-prev').addEventListener('click', () => showGalleryItem(galleryIndex - 1));
+lightbox.querySelector('.lightbox-next').addEventListener('click', () => showGalleryItem(galleryIndex + 1));
+
+lightbox.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft') showGalleryItem(galleryIndex - 1);
+  if (event.key === 'ArrowRight') showGalleryItem(galleryIndex + 1);
+});
+
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swiped = false;
+
+lightbox.addEventListener('pointerdown', event => {
+  swipeStartX = event.clientX;
+  swipeStartY = event.clientY;
+  swiped = false;
+});
+
+lightbox.addEventListener('pointerup', event => {
+  const deltaX = event.clientX - swipeStartX;
+  const deltaY = event.clientY - swipeStartY;
+  if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+    swiped = true;
+    showGalleryItem(galleryIndex + (deltaX < 0 ? 1 : -1));
+  }
+});
+
+lightboxImage.addEventListener('dragstart', event => event.preventDefault());
+
 lightbox.querySelector('.lightbox-close').addEventListener('click', () => lightbox.close());
 lightbox.addEventListener('click', event => {
+  // a swipe that ends on the backdrop must not close the lightbox
+  if (swiped) {
+    swiped = false;
+    return;
+  }
   if (event.target === lightbox) lightbox.close();
 });
 
