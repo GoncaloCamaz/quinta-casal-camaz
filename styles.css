@@ -880,16 +880,156 @@ h2 {
 }
 
 .map-wrap {
-	min-height: 620px;
+	position: relative;
 }
 
-.map-wrap iframe {
-	width: 100%;
+.map-static {
+	position: relative;
+	display: block;
 	height: 100%;
 	min-height: 620px;
-	border: 0;
+	overflow: hidden;
 	border-radius: var(--radius);
-	filter: saturate(.75) contrast(.95);
+}
+
+.map-static img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* the venue pin sits at 50% 34% of the image; matching object-position keeps it
+	   at exactly that spot of the box on every crop, so .map-pin can sit on top of it */
+	object-position: 50% 34%;
+}
+
+.map-pin {
+	position: absolute;
+	z-index: 2;
+	top: 34%;
+	left: 50%;
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* a soft pulsing ring, so the pin reads as something to tap */
+.map-pin::before {
+	content: "";
+	position: absolute;
+	inset: 8px;
+	border: 2px solid var(--gold);
+	border-radius: 50%;
+	animation: map-pin-pulse 2.4s ease-out infinite;
+}
+
+.map-pin[aria-expanded="true"]::before {
+	animation: none;
+	opacity: 1;
+}
+
+.map-pin:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 2px;
+}
+
+@keyframes map-pin-pulse {
+	0% { transform: scale(.6); opacity: .9; }
+	100% { transform: scale(1.5); opacity: 0; }
+}
+
+.map-card {
+	position: absolute;
+	z-index: 2;
+	top: calc(34% + 30px);
+	left: 50%;
+	width: max-content;
+	max-width: calc(100% - 32px);
+	padding: 16px 20px 18px;
+	border-radius: 18px;
+	background: var(--white);
+	color: var(--forest);
+	box-shadow: 0 18px 40px rgba(14, 43, 32, .28);
+	text-align: center;
+	transform: translateX(-50%);
+}
+
+.map-card[hidden] {
+	display: none;
+}
+
+/* small arrow pointing up at the pin */
+.map-card::before {
+	content: "";
+	position: absolute;
+	top: -7px;
+	left: 50%;
+	width: 14px;
+	height: 14px;
+	background: var(--white);
+	transform: translateX(-50%) rotate(45deg);
+}
+
+.map-card strong {
+	display: block;
+	font-family: "Playfair Display", Georgia, serif;
+	font-weight: 500;
+	font-size: 1.25rem;
+}
+
+.map-card p {
+	margin: 4px 0 12px;
+	font-size: .9rem;
+	line-height: 1.5;
+}
+
+.map-card-info {
+	margin: 0 0 14px;
+	padding: 12px 0 0;
+	border-top: 1px solid rgba(23, 61, 45, .12);
+	list-style: none;
+	font-size: .85rem;
+	line-height: 1.5;
+}
+
+.map-card-info li + li {
+	margin-top: 6px;
+}
+
+.map-card-info span {
+	display: block;
+	color: var(--gold);
+	font-size: .68rem;
+	font-weight: 700;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+}
+
+.map-card a {
+	color: var(--forest);
+	font-size: .85rem;
+	font-weight: 700;
+	text-decoration: underline;
+	text-decoration-color: var(--gold);
+	text-underline-offset: 4px;
+}
+
+.map-attribution {
+	position: absolute;
+	z-index: 1;
+	top: 12px;
+	right: 14px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: rgba(255, 253, 248, .8);
+	color: var(--forest);
+	font-size: .7rem;
 }
 
 .faq-list {
@@ -1347,8 +1487,9 @@ footer>small {
 	}
 
 	.map-wrap,
-	.map-wrap iframe {
-		min-height: 480px;
+	.map-static {
+		/* tall enough for the open address card under the pin */
+		min-height: 500px;
 	}
 }
 
@@ -1508,4 +1649,57 @@ footer>small {
 		opacity: 1;
 		transform: none;
 	}
+}
+/* Legal pages (privacy policy) */
+.legal-page .site-header {
+	background: rgba(14, 43, 32, .96);
+}
+
+.legal-back {
+	padding: 10px 18px;
+	border: 1px solid rgba(255, 255, 255, .4);
+	border-radius: 999px;
+	font-size: .88rem;
+	transition: background .25s ease;
+}
+
+.legal-back:hover {
+	background: rgba(255, 255, 255, .1);
+}
+
+.legal {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 150px 24px 90px;
+}
+
+.legal h1 {
+	margin: 0 0 8px;
+	font-size: clamp(2.4rem, 5vw, 3.4rem);
+}
+
+.legal h2 {
+	margin: 44px 0 12px;
+	font-size: 1.45rem;
+	scroll-margin-top: 110px;
+}
+
+.legal p,
+.legal li {
+	color: rgba(23, 33, 27, .85);
+}
+
+.legal ul {
+	padding-left: 1.2em;
+}
+
+.legal a {
+	color: var(--forest);
+	text-underline-offset: 2px;
+}
+
+.legal-updated {
+	margin-bottom: 32px;
+	font-size: .88rem;
+	opacity: .7;
 }

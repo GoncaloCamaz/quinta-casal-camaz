@@ -43,7 +43,7 @@
 
 		<link rel="preload" href="assets/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="stylesheet" href="styles.css?v=20261015b" />
+		<link rel="stylesheet" href="styles.css?v=20261015f" />
 		<script type="application/ld+json">
 			{
 				"@context": "https://schema.org",
@@ -716,7 +716,7 @@
 					<div class="route-cards">
 						<div>
 							<strong>De carro</strong>
-							<span>Acesso recomendado pela A28, saída Lavra / Aveleda.</span>
+							<span>Acesso recomendado pela A28, saída 12 (Lavra / Aveleda).</span>
 						</div>
 						<div>
 							<strong>De metro</strong>
@@ -736,12 +736,23 @@
 					</a>
 				</div>
 				<div class="map-wrap reveal">
-					<iframe
-						title="Localização da Quinta Casal Camaz no Google Maps"
-						src="https://www.google.com/maps?q=41.26764,-8.69596&z=15&output=embed"
-						loading="lazy"
-						referrerpolicy="no-referrer-when-downgrade"
-					></iframe>
+					<div class="map-static">
+						<picture>
+							<source srcset="assets/map/quinta-map.webp?v=20261015" type="image/webp" />
+							<img src="assets/map/quinta-map.jpg?v=20261015" width="1200" height="1300" alt="Mapa com o percurso desde a saída 12 da A28 até à Quinta Casal Camaz, em Aveleda, Vila do Conde" loading="lazy" />
+						</picture>
+						<button class="map-pin" type="button" aria-label="Mostrar a morada da Quinta Casal Camaz" aria-expanded="false" aria-controls="map-card"></button>
+						<div class="map-card" id="map-card" hidden>
+							<strong>Quinta Casal Camaz</strong>
+							<p>Rua de Aveleda 602<br />4485-017 Aveleda, Vila do Conde</p>
+							<ul class="map-card-info">
+								<li><span>De carro</span>A28, saída 12 (Lavra / Aveleda)</li>
+								<li><span>GPS</span>41.26764, -8.69596</li>
+							</ul>
+							<a href="https://www.google.com/maps/search/?api=1&query=41.26764,-8.69596" target="_blank" rel="noopener">Ver no Google Maps</a>
+						</div>
+					</div>
+					<a class="map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>
 				</div>
 			</section>
 
@@ -778,6 +789,7 @@
 				<a href="#chegar">Localização</a>
 				<a href="#faq">Perguntas frequentes</a>
 				<a href="#contactos">Contactos</a>
+				<a href="privacidade/">Política de privacidade</a>
 			</div>
 			<small>
 				©
@@ -793,6 +805,6 @@
 			<img alt="Fotografia ampliada da Quinta Casal Camaz" />
 			<p class="lightbox-credit" hidden>Fotografia: <a class="lightbox-credit-link" target="_blank" rel="noopener"></a></p>
 		</dialog>
-		<script src="script.js?v=20261015b"></script>
+		<script src="script.js?v=20261015f"></script>
 	</body>
 </html>

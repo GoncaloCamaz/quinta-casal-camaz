@@ -115,28 +115,31 @@ document.querySelectorAll('.faq-question').forEach(button => {
   });
 });
 
+const mapPin = document.querySelector('.map-pin');
+const mapCard = document.querySelector('.map-card');
+
+if (mapPin && mapCard) {
+  const setMapCard = open => {
+    mapCard.hidden = !open;
+    mapPin.setAttribute('aria-expanded', String(open));
+  };
+
+  mapPin.addEventListener('click', () => setMapCard(mapCard.hidden));
+  document.addEventListener('click', event => {
+    if (!mapCard.hidden && !mapCard.contains(event.target) && event.target !== mapPin) setMapCard(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !mapCard.hidden) {
+      setMapCard(false);
+      mapPin.focus();
+    }
+  });
+}
+
 document.querySelectorAll('a[href="#topo"]').forEach(link => link.addEventListener('click', event => {
   event.preventDefault();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }));
-
-const mapWrap = document.querySelector('.map-wrap');
-if (mapWrap) {
-  const mapPreconnectObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      ['https://www.google.com', 'https://maps.gstatic.com', 'https://maps.googleapis.com'].forEach(href => {
-        const link = document.createElement('link');
-        link.rel = 'preconnect';
-        link.href = href;
-        document.head.appendChild(link);
-      });
-      mapPreconnectObserver.disconnect();
-    });
-  }, { rootMargin: '800px' });
-
-  mapPreconnectObserver.observe(mapWrap);
-}
 
 document.querySelectorAll('[data-carousel]').forEach(carousel => {
   const track = carousel.querySelector('.carousel-track');
