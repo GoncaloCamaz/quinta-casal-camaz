@@ -40,8 +40,8 @@ const showGalleryItem = index => {
   galleryIndex = (index + galleryItems.length) % galleryItems.length;
   const button = galleryItems[galleryIndex];
   const thumb = button.querySelector('img');
-  // reuse the format the browser already picked for the thumbnail (WebP when supported)
-  lightboxImage.src = thumb.currentSrc || button.dataset.image;
+  // the thumbnail may be a small srcset candidate, so always open the full-size image
+  lightboxImage.src = button.dataset.image;
   lightboxImage.alt = thumb.alt;
   lightboxCredit.hidden = !button.dataset.credit;
   lightboxCreditLink.textContent = button.dataset.credit || '';
@@ -255,30 +255,50 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
   const stepAngle = 360 / cards.length;
   const maxAngle = (cards.length - 1) * stepAngle;
   const mobileQuery = window.matchMedia('(max-width: 680px)');
+  // Where supported, the phone layout is animated by CSS scroll-driven animations (see styles.css),
+  // which run off the main thread. JS on every scroll frame lagged behind the finger on phones.
+  const cssTimeline = window.CSS?.supports?.('animation-timeline: --a') && CSS.supports('animation-range: contain 0% contain 100%');
+  const stage = experienceSection.querySelector('.experience-stage');
 
   experienceSection.style.setProperty('--experience-cards', cards.length);
   experienceSection.classList.add('has-carousel');
   experienceWheel.classList.add('wheel-active');
 
-  let radius = mobileQuery.matches ? 90 : 190;
+  let radius = 190;
+  let useCss = false;
   let ticking = false;
+  let sectionTop = 0;
+  let scrollable = 0;
+  let lastProgress = -1;
+  const lastZ = [];
+
+  // Measure once instead of on every frame. The stage height (100vh) stays fixed while the
+  // mobile address bar shows and hides, unlike window.innerHeight, so the cards don't jump.
+  const measure = () => {
+    sectionTop = experienceSection.getBoundingClientRect().top + window.scrollY;
+    scrollable = experienceSection.offsetHeight - stage.offsetHeight;
+  };
+
+  const place = (card, i, transform, opacity, z) => {
+    card.style.transform = transform;
+    card.style.opacity = opacity;
+    if (lastZ[i] !== z) {
+      lastZ[i] = z;
+      card.style.zIndex = z;
+    }
+  };
 
   const renderCircular = angle => {
     cards.forEach((card, i) => {
-      const cardAngle = i * stepAngle - angle;
-      const rad = (cardAngle * Math.PI) / 180;
+      const rad = ((i * stepAngle - angle) * Math.PI) / 180;
       const x = Math.sin(rad) * radius * 1.3;
       const y = Math.cos(rad) * radius;
       const focus = (Math.cos(rad) + 1) / 2;
-      const scale = 0.7 + focus * 0.3;
-      const opacity = 0.32 + focus * 0.68;
-
-      card.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
-      card.style.opacity = opacity;
-      card.style.zIndex = Math.round(focus * 10);
+      place(card, i, `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${0.7 + focus * 0.3})`, 0.32 + focus * 0.68, Math.round(focus * 10));
     });
   };
 
+  // Keep in sync with the generated @keyframes experience-card-* in styles.css
   const renderVertical = progress => {
     const spacing = 130;
     const falloffRange = 1.6;
@@ -286,24 +306,21 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
 
     cards.forEach((card, i) => {
       const relativeStep = i - virtualIndex;
-      const distance = Math.abs(relativeStep);
-      const focus = Math.max(0, 1 - distance / falloffRange);
-      const y = relativeStep * spacing;
-      const scale = 0.72 + focus * 0.34;
-      const opacity = 0 + focus * 0.88;
-
-      card.style.transform = `translate(-50%, -50%) translate(0px, ${y}px) scale(${scale})`;
-      card.style.opacity = opacity;
-      card.style.zIndex = Math.round(focus * 10);
+      const focus = Math.max(0, 1 - Math.abs(relativeStep) / falloffRange);
+      place(card, i, `translate(-50%, -50%) translate(0px, ${relativeStep * spacing}px) scale(${0.72 + focus * 0.34})`, focus, Math.round(focus * 10));
     });
   };
 
-  const renderWheel = () => {
+  const renderWheel = (force = false) => {
     ticking = false;
-    const scrollable = experienceSection.offsetHeight - window.innerHeight;
+    if (useCss) return;
     const progress = scrollable > 0
-      ? Math.min(1, Math.max(0, -experienceSection.getBoundingClientRect().top / scrollable))
+      ? Math.min(1, Math.max(0, (window.scrollY - sectionTop) / scrollable))
       : 0;
+
+    // Outside the section the progress is pinned at 0 or 1, so there's nothing to redraw
+    if (progress === lastProgress && !force) return;
+    lastProgress = progress;
 
     if (mobileQuery.matches) {
       renderVertical(progress);
@@ -312,17 +329,38 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
     }
   };
 
+  const setMode = () => {
+    radius = mobileQuery.matches ? 90 : 190;
+    useCss = cssTimeline && mobileQuery.matches;
+    experienceWheel.classList.toggle('wheel-css', useCss);
+    if (useCss) {
+      // inline styles from the JS renderer would fight the CSS animation
+      cards.forEach(card => card.removeAttribute('style'));
+      lastZ.length = 0;
+    }
+    lastProgress = -1;
+  };
+
   window.addEventListener('scroll', () => {
-    if (!ticking) {
+    if (!useCss && !ticking) {
       ticking = true;
-      requestAnimationFrame(renderWheel);
+      requestAnimationFrame(() => renderWheel());
     }
   }, { passive: true });
 
-  window.addEventListener('resize', () => {
-    radius = mobileQuery.matches ? 90 : 190;
-    renderWheel();
+  const refresh = () => {
+    measure();
+    renderWheel(true);
+  };
+
+  mobileQuery.addEventListener('change', () => {
+    setMode();
+    refresh();
   });
 
-  renderWheel();
+  // Content above the section can still shift it (fonts), so re-measure when the page resizes
+  new ResizeObserver(refresh).observe(document.body);
+
+  setMode();
+  refresh();
 }

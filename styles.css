@@ -790,9 +790,288 @@ h2 {
 		width: min(300px, 82vw);
 		min-height: 170px;
 		padding: 24px;
-		background: rgba(255, 253, 248, .96);
+		/* solid, so the card behind never shows through the one in focus */
+		background: #fffdf8;
 		backdrop-filter: none;
+		/* a smaller blur radius is much cheaper to repaint on five moving layers */
+		box-shadow: 0 10px 24px rgba(16, 40, 29, .12);
 	}
+
+	/* Phones whose browser supports scroll-driven animations (class added by script.js): the browser
+	   moves the cards itself, off the main thread, instead of JS on every scroll frame. The keyframes
+	   below are generated from renderVertical() in script.js, so keep the two in sync. z-index lives in
+	   a separate animation because it can't run on the compositor and would drag the transform along. */
+	.experience.has-carousel {
+		view-timeline: --experience block;
+	}
+
+	.experience-wheel.wheel-css .experience-card {
+		animation-duration: auto;
+		animation-timing-function: linear;
+		animation-fill-mode: both;
+		animation-timeline: --experience;
+		animation-range: contain 0% contain 100%;
+	}
+
+	.experience-wheel.wheel-css .experience-card:nth-child(1) {
+		animation-name: experience-card-1, experience-card-1-z;
+	}
+
+	.experience-wheel.wheel-css .experience-card:nth-child(2) {
+		animation-name: experience-card-2, experience-card-2-z;
+	}
+
+	.experience-wheel.wheel-css .experience-card:nth-child(3) {
+		animation-name: experience-card-3, experience-card-3-z;
+	}
+
+	.experience-wheel.wheel-css .experience-card:nth-child(4) {
+		animation-name: experience-card-4, experience-card-4-z;
+	}
+
+	.experience-wheel.wheel-css .experience-card:nth-child(5) {
+		animation-name: experience-card-5, experience-card-5-z;
+	}
+}
+
+@keyframes experience-card-1 {
+	0% { transform: translate(-50%, -50%) translate(0, 0.0px) scale(1.060); opacity: 1.000; }
+	5% { transform: translate(-50%, -50%) translate(0, -26.0px) scale(1.018); opacity: 0.875; }
+	10% { transform: translate(-50%, -50%) translate(0, -52.0px) scale(0.975); opacity: 0.750; }
+	15% { transform: translate(-50%, -50%) translate(0, -78.0px) scale(0.932); opacity: 0.625; }
+	20% { transform: translate(-50%, -50%) translate(0, -104.0px) scale(0.890); opacity: 0.500; }
+	25% { transform: translate(-50%, -50%) translate(0, -130.0px) scale(0.847); opacity: 0.375; }
+	30% { transform: translate(-50%, -50%) translate(0, -156.0px) scale(0.805); opacity: 0.250; }
+	35% { transform: translate(-50%, -50%) translate(0, -182.0px) scale(0.762); opacity: 0.125; }
+	40% { transform: translate(-50%, -50%) translate(0, -208.0px) scale(0.720); opacity: 0.000; }
+	45% { transform: translate(-50%, -50%) translate(0, -234.0px) scale(0.720); opacity: 0.000; }
+	50% { transform: translate(-50%, -50%) translate(0, -260.0px) scale(0.720); opacity: 0.000; }
+	55% { transform: translate(-50%, -50%) translate(0, -286.0px) scale(0.720); opacity: 0.000; }
+	60% { transform: translate(-50%, -50%) translate(0, -312.0px) scale(0.720); opacity: 0.000; }
+	65% { transform: translate(-50%, -50%) translate(0, -338.0px) scale(0.720); opacity: 0.000; }
+	70% { transform: translate(-50%, -50%) translate(0, -364.0px) scale(0.720); opacity: 0.000; }
+	75% { transform: translate(-50%, -50%) translate(0, -390.0px) scale(0.720); opacity: 0.000; }
+	80% { transform: translate(-50%, -50%) translate(0, -416.0px) scale(0.720); opacity: 0.000; }
+	85% { transform: translate(-50%, -50%) translate(0, -442.0px) scale(0.720); opacity: 0.000; }
+	90% { transform: translate(-50%, -50%) translate(0, -468.0px) scale(0.720); opacity: 0.000; }
+	95% { transform: translate(-50%, -50%) translate(0, -494.0px) scale(0.720); opacity: 0.000; }
+	100% { transform: translate(-50%, -50%) translate(0, -520.0px) scale(0.720); opacity: 0.000; }
+}
+
+@keyframes experience-card-1-z {
+	0% { z-index: 10; }
+	5% { z-index: 9; }
+	10% { z-index: 8; }
+	15% { z-index: 6; }
+	20% { z-index: 5; }
+	25% { z-index: 4; }
+	30% { z-index: 3; }
+	35% { z-index: 1; }
+	40% { z-index: 0; }
+	45% { z-index: 0; }
+	50% { z-index: 0; }
+	55% { z-index: 0; }
+	60% { z-index: 0; }
+	65% { z-index: 0; }
+	70% { z-index: 0; }
+	75% { z-index: 0; }
+	80% { z-index: 0; }
+	85% { z-index: 0; }
+	90% { z-index: 0; }
+	95% { z-index: 0; }
+	100% { z-index: 0; }
+}
+
+@keyframes experience-card-2 {
+	0% { transform: translate(-50%, -50%) translate(0, 130.0px) scale(0.847); opacity: 0.375; }
+	5% { transform: translate(-50%, -50%) translate(0, 104.0px) scale(0.890); opacity: 0.500; }
+	10% { transform: translate(-50%, -50%) translate(0, 78.0px) scale(0.932); opacity: 0.625; }
+	15% { transform: translate(-50%, -50%) translate(0, 52.0px) scale(0.975); opacity: 0.750; }
+	20% { transform: translate(-50%, -50%) translate(0, 26.0px) scale(1.018); opacity: 0.875; }
+	25% { transform: translate(-50%, -50%) translate(0, 0.0px) scale(1.060); opacity: 1.000; }
+	30% { transform: translate(-50%, -50%) translate(0, -26.0px) scale(1.018); opacity: 0.875; }
+	35% { transform: translate(-50%, -50%) translate(0, -52.0px) scale(0.975); opacity: 0.750; }
+	40% { transform: translate(-50%, -50%) translate(0, -78.0px) scale(0.932); opacity: 0.625; }
+	45% { transform: translate(-50%, -50%) translate(0, -104.0px) scale(0.890); opacity: 0.500; }
+	50% { transform: translate(-50%, -50%) translate(0, -130.0px) scale(0.847); opacity: 0.375; }
+	55% { transform: translate(-50%, -50%) translate(0, -156.0px) scale(0.805); opacity: 0.250; }
+	60% { transform: translate(-50%, -50%) translate(0, -182.0px) scale(0.762); opacity: 0.125; }
+	65% { transform: translate(-50%, -50%) translate(0, -208.0px) scale(0.720); opacity: 0.000; }
+	70% { transform: translate(-50%, -50%) translate(0, -234.0px) scale(0.720); opacity: 0.000; }
+	75% { transform: translate(-50%, -50%) translate(0, -260.0px) scale(0.720); opacity: 0.000; }
+	80% { transform: translate(-50%, -50%) translate(0, -286.0px) scale(0.720); opacity: 0.000; }
+	85% { transform: translate(-50%, -50%) translate(0, -312.0px) scale(0.720); opacity: 0.000; }
+	90% { transform: translate(-50%, -50%) translate(0, -338.0px) scale(0.720); opacity: 0.000; }
+	95% { transform: translate(-50%, -50%) translate(0, -364.0px) scale(0.720); opacity: 0.000; }
+	100% { transform: translate(-50%, -50%) translate(0, -390.0px) scale(0.720); opacity: 0.000; }
+}
+
+@keyframes experience-card-2-z {
+	0% { z-index: 4; }
+	5% { z-index: 5; }
+	10% { z-index: 6; }
+	15% { z-index: 8; }
+	20% { z-index: 9; }
+	25% { z-index: 10; }
+	30% { z-index: 9; }
+	35% { z-index: 8; }
+	40% { z-index: 6; }
+	45% { z-index: 5; }
+	50% { z-index: 4; }
+	55% { z-index: 2; }
+	60% { z-index: 1; }
+	65% { z-index: 0; }
+	70% { z-index: 0; }
+	75% { z-index: 0; }
+	80% { z-index: 0; }
+	85% { z-index: 0; }
+	90% { z-index: 0; }
+	95% { z-index: 0; }
+	100% { z-index: 0; }
+}
+
+@keyframes experience-card-3 {
+	0% { transform: translate(-50%, -50%) translate(0, 260.0px) scale(0.720); opacity: 0.000; }
+	5% { transform: translate(-50%, -50%) translate(0, 234.0px) scale(0.720); opacity: 0.000; }
+	10% { transform: translate(-50%, -50%) translate(0, 208.0px) scale(0.720); opacity: 0.000; }
+	15% { transform: translate(-50%, -50%) translate(0, 182.0px) scale(0.762); opacity: 0.125; }
+	20% { transform: translate(-50%, -50%) translate(0, 156.0px) scale(0.805); opacity: 0.250; }
+	25% { transform: translate(-50%, -50%) translate(0, 130.0px) scale(0.847); opacity: 0.375; }
+	30% { transform: translate(-50%, -50%) translate(0, 104.0px) scale(0.890); opacity: 0.500; }
+	35% { transform: translate(-50%, -50%) translate(0, 78.0px) scale(0.932); opacity: 0.625; }
+	40% { transform: translate(-50%, -50%) translate(0, 52.0px) scale(0.975); opacity: 0.750; }
+	45% { transform: translate(-50%, -50%) translate(0, 26.0px) scale(1.018); opacity: 0.875; }
+	50% { transform: translate(-50%, -50%) translate(0, 0.0px) scale(1.060); opacity: 1.000; }
+	55% { transform: translate(-50%, -50%) translate(0, -26.0px) scale(1.018); opacity: 0.875; }
+	60% { transform: translate(-50%, -50%) translate(0, -52.0px) scale(0.975); opacity: 0.750; }
+	65% { transform: translate(-50%, -50%) translate(0, -78.0px) scale(0.932); opacity: 0.625; }
+	70% { transform: translate(-50%, -50%) translate(0, -104.0px) scale(0.890); opacity: 0.500; }
+	75% { transform: translate(-50%, -50%) translate(0, -130.0px) scale(0.847); opacity: 0.375; }
+	80% { transform: translate(-50%, -50%) translate(0, -156.0px) scale(0.805); opacity: 0.250; }
+	85% { transform: translate(-50%, -50%) translate(0, -182.0px) scale(0.762); opacity: 0.125; }
+	90% { transform: translate(-50%, -50%) translate(0, -208.0px) scale(0.720); opacity: 0.000; }
+	95% { transform: translate(-50%, -50%) translate(0, -234.0px) scale(0.720); opacity: 0.000; }
+	100% { transform: translate(-50%, -50%) translate(0, -260.0px) scale(0.720); opacity: 0.000; }
+}
+
+@keyframes experience-card-3-z {
+	0% { z-index: 0; }
+	5% { z-index: 0; }
+	10% { z-index: 0; }
+	15% { z-index: 1; }
+	20% { z-index: 3; }
+	25% { z-index: 4; }
+	30% { z-index: 5; }
+	35% { z-index: 6; }
+	40% { z-index: 8; }
+	45% { z-index: 9; }
+	50% { z-index: 10; }
+	55% { z-index: 9; }
+	60% { z-index: 8; }
+	65% { z-index: 6; }
+	70% { z-index: 5; }
+	75% { z-index: 4; }
+	80% { z-index: 2; }
+	85% { z-index: 1; }
+	90% { z-index: 0; }
+	95% { z-index: 0; }
+	100% { z-index: 0; }
+}
+
+@keyframes experience-card-4 {
+	0% { transform: translate(-50%, -50%) translate(0, 390.0px) scale(0.720); opacity: 0.000; }
+	5% { transform: translate(-50%, -50%) translate(0, 364.0px) scale(0.720); opacity: 0.000; }
+	10% { transform: translate(-50%, -50%) translate(0, 338.0px) scale(0.720); opacity: 0.000; }
+	15% { transform: translate(-50%, -50%) translate(0, 312.0px) scale(0.720); opacity: 0.000; }
+	20% { transform: translate(-50%, -50%) translate(0, 286.0px) scale(0.720); opacity: 0.000; }
+	25% { transform: translate(-50%, -50%) translate(0, 260.0px) scale(0.720); opacity: 0.000; }
+	30% { transform: translate(-50%, -50%) translate(0, 234.0px) scale(0.720); opacity: 0.000; }
+	35% { transform: translate(-50%, -50%) translate(0, 208.0px) scale(0.720); opacity: 0.000; }
+	40% { transform: translate(-50%, -50%) translate(0, 182.0px) scale(0.762); opacity: 0.125; }
+	45% { transform: translate(-50%, -50%) translate(0, 156.0px) scale(0.805); opacity: 0.250; }
+	50% { transform: translate(-50%, -50%) translate(0, 130.0px) scale(0.847); opacity: 0.375; }
+	55% { transform: translate(-50%, -50%) translate(0, 104.0px) scale(0.890); opacity: 0.500; }
+	60% { transform: translate(-50%, -50%) translate(0, 78.0px) scale(0.932); opacity: 0.625; }
+	65% { transform: translate(-50%, -50%) translate(0, 52.0px) scale(0.975); opacity: 0.750; }
+	70% { transform: translate(-50%, -50%) translate(0, 26.0px) scale(1.018); opacity: 0.875; }
+	75% { transform: translate(-50%, -50%) translate(0, 0.0px) scale(1.060); opacity: 1.000; }
+	80% { transform: translate(-50%, -50%) translate(0, -26.0px) scale(1.018); opacity: 0.875; }
+	85% { transform: translate(-50%, -50%) translate(0, -52.0px) scale(0.975); opacity: 0.750; }
+	90% { transform: translate(-50%, -50%) translate(0, -78.0px) scale(0.932); opacity: 0.625; }
+	95% { transform: translate(-50%, -50%) translate(0, -104.0px) scale(0.890); opacity: 0.500; }
+	100% { transform: translate(-50%, -50%) translate(0, -130.0px) scale(0.847); opacity: 0.375; }
+}
+
+@keyframes experience-card-4-z {
+	0% { z-index: 0; }
+	5% { z-index: 0; }
+	10% { z-index: 0; }
+	15% { z-index: 0; }
+	20% { z-index: 0; }
+	25% { z-index: 0; }
+	30% { z-index: 0; }
+	35% { z-index: 0; }
+	40% { z-index: 1; }
+	45% { z-index: 3; }
+	50% { z-index: 4; }
+	55% { z-index: 5; }
+	60% { z-index: 6; }
+	65% { z-index: 8; }
+	70% { z-index: 9; }
+	75% { z-index: 10; }
+	80% { z-index: 9; }
+	85% { z-index: 8; }
+	90% { z-index: 6; }
+	95% { z-index: 5; }
+	100% { z-index: 4; }
+}
+
+@keyframes experience-card-5 {
+	0% { transform: translate(-50%, -50%) translate(0, 520.0px) scale(0.720); opacity: 0.000; }
+	5% { transform: translate(-50%, -50%) translate(0, 494.0px) scale(0.720); opacity: 0.000; }
+	10% { transform: translate(-50%, -50%) translate(0, 468.0px) scale(0.720); opacity: 0.000; }
+	15% { transform: translate(-50%, -50%) translate(0, 442.0px) scale(0.720); opacity: 0.000; }
+	20% { transform: translate(-50%, -50%) translate(0, 416.0px) scale(0.720); opacity: 0.000; }
+	25% { transform: translate(-50%, -50%) translate(0, 390.0px) scale(0.720); opacity: 0.000; }
+	30% { transform: translate(-50%, -50%) translate(0, 364.0px) scale(0.720); opacity: 0.000; }
+	35% { transform: translate(-50%, -50%) translate(0, 338.0px) scale(0.720); opacity: 0.000; }
+	40% { transform: translate(-50%, -50%) translate(0, 312.0px) scale(0.720); opacity: 0.000; }
+	45% { transform: translate(-50%, -50%) translate(0, 286.0px) scale(0.720); opacity: 0.000; }
+	50% { transform: translate(-50%, -50%) translate(0, 260.0px) scale(0.720); opacity: 0.000; }
+	55% { transform: translate(-50%, -50%) translate(0, 234.0px) scale(0.720); opacity: 0.000; }
+	60% { transform: translate(-50%, -50%) translate(0, 208.0px) scale(0.720); opacity: 0.000; }
+	65% { transform: translate(-50%, -50%) translate(0, 182.0px) scale(0.762); opacity: 0.125; }
+	70% { transform: translate(-50%, -50%) translate(0, 156.0px) scale(0.805); opacity: 0.250; }
+	75% { transform: translate(-50%, -50%) translate(0, 130.0px) scale(0.847); opacity: 0.375; }
+	80% { transform: translate(-50%, -50%) translate(0, 104.0px) scale(0.890); opacity: 0.500; }
+	85% { transform: translate(-50%, -50%) translate(0, 78.0px) scale(0.932); opacity: 0.625; }
+	90% { transform: translate(-50%, -50%) translate(0, 52.0px) scale(0.975); opacity: 0.750; }
+	95% { transform: translate(-50%, -50%) translate(0, 26.0px) scale(1.018); opacity: 0.875; }
+	100% { transform: translate(-50%, -50%) translate(0, 0.0px) scale(1.060); opacity: 1.000; }
+}
+
+@keyframes experience-card-5-z {
+	0% { z-index: 0; }
+	5% { z-index: 0; }
+	10% { z-index: 0; }
+	15% { z-index: 0; }
+	20% { z-index: 0; }
+	25% { z-index: 0; }
+	30% { z-index: 0; }
+	35% { z-index: 0; }
+	40% { z-index: 0; }
+	45% { z-index: 0; }
+	50% { z-index: 0; }
+	55% { z-index: 0; }
+	60% { z-index: 0; }
+	65% { z-index: 1; }
+	70% { z-index: 2; }
+	75% { z-index: 4; }
+	80% { z-index: 5; }
+	85% { z-index: 6; }
+	90% { z-index: 8; }
+	95% { z-index: 9; }
+	100% { z-index: 10; }
 }
 
 .gallery-grid {
@@ -1702,4 +1981,21 @@ footer>small {
 	margin-bottom: 32px;
 	font-size: .88rem;
 	opacity: .7;
+}
+
+/* 404 page */
+.not-found-page .hero {
+	align-items: center;
+}
+
+.not-found-en {
+	margin-top: 32px;
+	font-size: .92rem;
+	color: rgba(255, 255, 255, .7);
+}
+
+.not-found-en a {
+	color: white;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
