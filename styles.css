@@ -1822,6 +1822,8 @@ footer>small {
 	/* Sits in the empty space beside the stacked buttons, so the hero keeps its height */
 	.hero-actions {
 		position: relative;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 
 	.tour-link {
