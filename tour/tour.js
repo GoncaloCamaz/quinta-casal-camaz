@@ -4,8 +4,10 @@ const progress = tour.querySelector('.progress');
 const chapterLabel = tour.querySelector('.tour-chapter');
 const pauseButton = tour.querySelector('.pause-toggle');
 const backdrop = document.querySelector('.backdrop');
+const closeLink = tour.querySelector('.tour-controls a.icon-button');
 const HOLD_MS = 220;
 const SWIPE_PX = 50;
+const CLOSE_PX = 120;
 const TEXT = document.documentElement.lang.startsWith('en')
   ? { of: 'of', pause: 'Pause the tour', resume: 'Resume the tour' }
   : { of: 'de', pause: 'Pausar a visita', resume: 'Retomar a visita' };
@@ -119,6 +121,10 @@ tour.querySelectorAll('.tap-zone').forEach(zone => {
   zone.addEventListener('pointerup', event => {
     if (!pointer) return;
     clearTimeout(pointer.timer);
+    if (drag?.active) {
+      pointer = null;
+      return;
+    }
     const dx = event.clientX - pointer.x;
     const wasHeld = pointer.held;
     pointer = null;
@@ -150,8 +156,76 @@ let finalStart = null;
 const finalSlide = slides.at(-1);
 finalSlide.addEventListener('pointerdown', event => { finalStart = event.clientX; });
 finalSlide.addEventListener('pointerup', event => {
+  if (drag?.active) finalStart = null;
   if (finalStart !== null && event.clientX - finalStart > SWIPE_PX * 1.5) prev();
   finalStart = null;
+});
+
+// Drag down to close, like dismissing a story
+let drag = null;
+
+const resetDrag = () => {
+  tour.classList.remove('is-dragging', 'is-holding');
+  tour.style.transform = '';
+  tour.style.opacity = '';
+  syncPaused();
+};
+
+tour.addEventListener('pointerdown', event => {
+  if (!event.isPrimary || event.target.closest('.tour-top')) return;
+  drag = { x: event.clientX, y: event.clientY, t: event.timeStamp, active: false };
+});
+
+tour.addEventListener('pointermove', event => {
+  if (!drag || !event.isPrimary) return;
+  const dx = event.clientX - drag.x;
+  const dy = event.clientY - drag.y;
+  if (!drag.active) {
+    if (Math.abs(dx) > 12 && Math.abs(dx) > dy) drag = null;
+    if (!drag || dy < 12) return;
+    drag.active = true;
+    tour.classList.add('is-dragging', 'is-holding');
+    syncPaused();
+  }
+  const pull = Math.max(0, dy);
+  tour.style.transform = `translateY(${pull}px) scale(${1 - Math.min(pull, 400) / 4000})`;
+  tour.style.opacity = String(1 - Math.min(pull, 400) / 1000);
+});
+
+tour.addEventListener('pointerup', event => {
+  if (!drag) return;
+  const { active, y, t } = drag;
+  drag = null;
+  if (!active) return;
+  const dy = event.clientY - y;
+  const flick = dy > SWIPE_PX && event.timeStamp - t < 250;
+  if (dy > CLOSE_PX || flick) {
+    tour.classList.add('is-closing');
+    tour.style.transform = 'translateY(100%)';
+    tour.style.opacity = '0';
+    location.href = closeLink.href;
+  } else {
+    resetDrag();
+  }
+  // A drag that ends on a button or link must not also press it
+  const swallow = clickEvent => {
+    clickEvent.preventDefault();
+    clickEvent.stopPropagation();
+  };
+  tour.addEventListener('click', swallow, { capture: true, once: true });
+  setTimeout(() => tour.removeEventListener('click', swallow, { capture: true }), 400);
+});
+
+tour.addEventListener('pointercancel', () => {
+  if (drag?.active) resetDrag();
+  drag = null;
+});
+
+// Coming back with the browser's back button restores the page as it was left
+window.addEventListener('pageshow', event => {
+  if (!event.persisted) return;
+  tour.classList.remove('is-closing');
+  resetDrag();
 });
 
 pauseButton.addEventListener('click', () => {
