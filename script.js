@@ -348,7 +348,16 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
     }
   }, { passive: true });
 
+  // Every card takes the height of the tallest one, so the stack and the wheel keep an even rhythm.
+  // Set as a variable on the wheel because setMode() wipes the cards' inline styles.
+  const equalizeCards = () => {
+    experienceWheel.style.removeProperty('--experience-card-height');
+    const tallest = Math.max(...cards.map(card => card.offsetHeight));
+    experienceWheel.style.setProperty('--experience-card-height', `${tallest}px`);
+  };
+
   const refresh = () => {
+    equalizeCards();
     measure();
     renderWheel(true);
   };
@@ -363,4 +372,6 @@ if (experienceSection && experienceWheel && !window.matchMedia('(prefers-reduced
 
   setMode();
   refresh();
+  // Card heights change once the web fonts arrive
+  document.fonts?.ready.then(refresh);
 }

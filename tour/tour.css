@@ -113,7 +113,7 @@ button {
 	position: absolute;
 	inset: 0;
 	background:
-		linear-gradient(180deg, rgba(5, 18, 12, .62) 0%, rgba(5, 18, 12, 0) 22%),
+		linear-gradient(180deg, rgba(5, 18, 12, .78) 0%, rgba(5, 18, 12, .4) 12%, rgba(5, 18, 12, 0) 26%),
 		linear-gradient(0deg, rgba(5, 18, 12, .92) 0%, rgba(5, 18, 12, .55) 30%, rgba(5, 18, 12, 0) 58%);
 	pointer-events: none;
 }
@@ -482,14 +482,18 @@ h2 {
 
 .tour-brand {
 	display: grid;
+	justify-items: start;
+	gap: 9px;
 	line-height: 1.2;
 	text-shadow: 0 1px 8px rgba(0, 0, 0, .4);
 }
 
-.tour-brand strong {
-	font-family: "Playfair Display", Georgia, serif;
-	font-size: 1rem;
-	font-weight: 500;
+.tour-logo {
+	display: block;
+	width: auto;
+	height: 30px;
+	/* keeps the thin gold strokes readable over the photos */
+	filter: drop-shadow(0 1px 6px rgba(0, 0, 0, .55));
 }
 
 .tour-chapter {

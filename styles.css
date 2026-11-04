@@ -102,33 +102,29 @@ textarea {
 	gap: 12px;
 }
 
-.brand-mark {
-	width: 44px;
-	height: 44px;
-	display: grid;
-	place-items: center;
-	border: 1px solid rgba(255, 255, 255, .65);
-	border-radius: 50%;
-	font-family: "Playfair Display";
-	letter-spacing: -.06em;
-}
-
-.brand strong,
-.brand small {
+.brand-logo {
 	display: block;
-	line-height: 1.25;
+	width: auto;
+	height: 46px;
+	transform-origin: left center;
+	/* only transform animates: height or filter transitions re-rasterize the detailed SVG every frame and the header stutters */
+	transition: transform .45s ease;
+	will-change: transform;
 }
 
-.brand strong {
-	font-family: "Playfair Display";
-	font-size: 1rem;
+/* lifts the thin gold strokes off the busy hero photo; swapped instantly, never transitioned */
+.site-header:not(.scrolled) .brand-logo {
+	filter: drop-shadow(0 1px 6px rgba(0, 0, 0, .55));
 }
 
-.brand small {
-	opacity: .7;
-	font-size: .72rem;
-	letter-spacing: .08em;
-	text-transform: uppercase;
+.site-header.scrolled .brand-logo {
+	transform: scale(.78);
+}
+
+.footer-logo {
+	display: block;
+	width: min(230px, 60vw);
+	height: auto;
 }
 
 nav {
@@ -723,7 +719,8 @@ h2 {
 	z-index: 20;
 }
 
-.experience-stage .section-heading h2 {
+.experience-stage .section-heading h2,
+.contact-card h2 {
 	font-size: clamp(2.6rem, 4vw, 3.8rem);
 }
 
@@ -768,6 +765,8 @@ h2 {
 	left: 50%;
 	width: min(220px, 55vw);
 	min-height: 160px;
+	/* tallest card's height, measured in script.js */
+	height: var(--experience-card-height, auto);
 	padding: 24px;
 	margin: 0;
 	background: rgba(255, 253, 248, .92);
@@ -1503,29 +1502,39 @@ h2 {
 }
 
 footer {
-	padding: 60px clamp(24px, 7vw, 120px);
+	padding: 32px clamp(24px, 7vw, 120px);
 	background: #091d15;
 	color: white;
-	display: grid;
-	grid-template-columns: 1fr auto;
-	align-items: end;
-	gap: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 26px;
 }
 
-.footer-brand {
-	grid-column: 1/-1;
+footer>p {
+	margin: 0;
+	font-family: "Playfair Display", Georgia, serif;
+	font-weight: 400;
+	font-size: 1.05rem;
+	opacity: .85;
 }
 
 .footer-links {
 	display: flex;
-	gap: 24px;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px 28px;
 	font-size: .85rem;
 	opacity: .75;
 }
 
 footer>small {
-	grid-column: 1/-1;
-	text-align: center;
+	width: 100%;
+	max-width: 1100px;
+	margin-top: 14px;
+	padding-top: 24px;
+	border-top: 1px solid rgba(184, 154, 98, .18);
 	opacity: .55;
 }
 
@@ -1782,13 +1791,12 @@ footer>small {
 		padding-inline: 18px;
 	}
 
-	.brand strong {
-		font-size: .9rem;
+	.brand-logo {
+		height: 36px;
 	}
 
-	.brand-mark {
-		width: 40px;
-		height: 40px;
+	.site-header.scrolled .brand-logo {
+		transform: scale(.89);
 	}
 
 	.hero-copy {
@@ -1955,19 +1963,11 @@ footer>small {
 	}
 
 	footer {
-		grid-template-columns: 1fr;
-	}
-
-	.footer-brand {
-		grid-column: auto;
+		gap: 22px;
 	}
 
 	.footer-links {
-		flex-wrap: wrap;
-	}
-
-	footer>small {
-		text-align: left;
+		gap: 10px 20px;
 	}
 }
 
